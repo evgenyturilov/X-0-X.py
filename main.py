@@ -109,9 +109,11 @@ def check_0(field):
 
 
 def settings():
-  sett = int(input('\nПротив кого вы хотите играть?\n  Человек - 1\n  Компьютер - 2\n'))
-  if sett == 1 or sett == 2:
+  sett = input('\nПротив кого вы хотите играть?\n  Человек - 1\n  Компьютер - 2\n  Выйти из игры - 3\n')
+  if sett == '1' or sett == '2':
     return sett
+  elif sett == '3':
+    exit('До скорой встречи!')
   else:
     print('Некорректный ввод!')
     return settings()
