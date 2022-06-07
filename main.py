@@ -1,3 +1,5 @@
+from random import randint
+
 field = [
           [' ', '1', '2', '3'],
           ['1', '-', '-', '-'],
@@ -20,11 +22,12 @@ def user_X_input():
   if x in (1,2,3) and y in (1,2,3):
     for i in range(len(field)):
       for j in range(len(field[i])):
-        if field[x][y] != '0':
-          field[x][y] = 'X'
-        else:
-          print('\nПоле занято, введите другие значения!')
-          return user_0_input()
+        str = field[x][y]
+    if str == '-':
+      field[x][y] = 'X'
+    else:
+      print('\nПоле занято, введите другие значения!')
+      return user_X_input()
     return field
   else:
     print('Введены некорректные данные')
@@ -38,31 +41,118 @@ def user_0_input():
   if x in (1,2,3) and y in (1,2,3):
     for i in range(len(field)):
       for j in range(len(field[i])):
-        if field[x][y] != 'X':
-          field[x][y] = '0'
-        else:
-          print('\nПоле занято, введите другие значения!')
-          return user_0_input()
+        str = field[x][y]
+    if str == '-':
+      field[x][y] = '0'
+    else:
+      print('\nПоле занято, введите другие значения!')
+      return user_0_input()
     return field
   else:
     print('Введены некорректные данные')
     return user_0_input()
 
-def game(field, count):
-  while count < 9:
-    user_X_input()
-    print_game_field(field)
-    count += 1
-    print(f'Число ходов: {count}')
-    user_0_input()
-    print_game_field(field)
-    count += 1
-    print(f'Число ходов: {count}')
-    return game(field, count)
+def computer_X_input():
+  x = randint(1,3)
+  y = randint(1,3)
+  for i in range(len(field)):
+    for j in range(len(field[i])):
+      str = field[x][y]
+  if str == '-':
+    field[x][y] = 'X'
   else:
-    print('Нет свободных полей!Ничья!')
-    exit('Игра окончена!')
+    return computer_X_input()
+  return field
 
+def computer_0_input():
+  x = randint(1,3)
+  y = randint(1,3)
+  for i in range(len(field)):
+    for j in range(len(field[i])):
+      str = field[x][y]
+  if str == '-':
+    field[x][y] = '0'
+  else:
+    return computer_X_input()
+  return field
+
+def check_X(field):
+  for i in range(len(field)):
+      for j in range(len(field[i])):
+        if ((field[1][1] == 'X' and field[1][2] == 'X' and field[1][3] == 'X') or
+            (field[2][1] == 'X' and field[2][2] == 'X' and field[2][3] == 'X') or
+            (field[3][1] == 'X' and field[3][2] == 'X' and field[3][3] == 'X') or
+            (field[1][1] == 'X' and field[2][1] == 'X' and field[3][1] == 'X') or
+            (field[1][2] == 'X' and field[2][2] == 'X' and field[3][2] == 'X') or
+            (field[1][3] == 'X' and field[2][3] == 'X' and field[3][3] == 'X') or
+            (field[1][1] == 'X' and field[2][2] == 'X' and field[3][3] == 'X') or
+            (field[3][1] == 'X' and field[2][2] == 'X' and field[3][1] == 'X')):
+              print('\nПобедил игрок X!')
+              exit('\nИгра окончена!')
+        else:
+          continue
+def check_0(field):
+  for i in range(len(field)):
+      for j in range(len(field[i])):
+        if ((field[1][1] == '0' and field[1][2] == '0' and field[1][3] == '0') or
+            (field[2][1] == '0' and field[2][2] == '0' and field[2][3] == '0') or
+            (field[3][1] == '0' and field[3][2] == '0' and field[3][3] == '0') or
+            (field[1][1] == '0' and field[2][1] == '0' and field[3][1] == '0') or
+            (field[1][2] == '0' and field[2][2] == '0' and field[3][2] == '0') or
+            (field[1][3] == '0' and field[2][3] == '0' and field[3][3] == '0') or
+            (field[1][1] == '0' and field[2][2] == '0' and field[3][3] == '0') or
+            (field[3][1] == '0' and field[2][2] == '0' and field[3][1] == '0')):
+              print('\nПобедил игрок 0!')
+              exit('\nИгра окончена!')
+        else:
+          continue
+
+
+def settings():
+  sett = int(input('\nПротив кого вы хотите играть?\n  Человек - 1\n  Компьютер - 2\n'))
+  if sett == 1 or sett == 2:
+    return sett
+  else:
+    print('Некорректный ввод!')
+    return settings()
+
+
+
+def game(field, count, sett):
+  if sett == 1:
+    while count < 9:
+      user_X_input()
+      count += 1
+      check_X(field)
+      print_game_field(field)
+      print(f'\nЧисло ходов: {count}')
+      user_0_input()
+      count += 1
+      check_0(field)
+      print_game_field(field)
+      print(f'\nЧисло ходов: {count}')
+      return game(field, count, sett)
+    else:
+      print('Нет свободных полей! Ничья!')
+      exit('Игра окончена!')
+  elif sett == 2:
+    while count < 9:
+      user_X_input()
+      count += 1
+      check_X(field)
+      print_game_field(field)
+      print(f'\nЧисло ходов: {count}')
+      computer_0_input()
+      count += 1
+      check_0(field)
+      print_game_field(field)
+      print(f'\nЧисло ходов: {count}')
+      return game(field, count, sett)
+  else:
+    print('Нет свободных полей! Ничья!')
+    exit('Игра окончена!')
   
+
+sett = settings()
 print_game_field(field)
-game(field, count)
+game(field, count, sett)
