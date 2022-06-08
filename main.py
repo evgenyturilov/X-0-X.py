@@ -121,7 +121,7 @@ def settings():
 
 
 def game(field, count, sett):
-  if sett == 1:
+  if sett == '1':
     while count < 9:
       user_X_input()
       count += 1
@@ -137,7 +137,7 @@ def game(field, count, sett):
     else:
       print('Нет свободных полей! Ничья!')
       exit('Игра окончена!')
-  elif sett == 2:
+  elif sett == '2':
     while count < 9:
       user_X_input()
       count += 1
