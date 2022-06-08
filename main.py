@@ -9,7 +9,7 @@ field = [
           ['2', '-', '-', '-'],
           ['3', '-', '-', '-']
         ]                            # Создаем игровое поле, которое будет меняться в процессе игры
-count = 0    # Счетчик для подсчета количества ходов
+count = 1    # Счетчик для подсчета количества ходов
 
 def print_game_field(field):        # Функция выводит на экран игровое поле
   print()
@@ -70,7 +70,7 @@ def check(field, var):  # Проверка условия выигрыша
 
 
 def settings():
-  sett = input('\nПротив кого вы хотите играть?\n  Человек - 1\n  Компьютер - 2\n  Выйти из игры - 3\n')
+  sett = input('\nПротив кого вы хотите играть?\n\n  Человек - 1\n  Компьютер - 2\n  Выйти из игры - 3\n\n')
   if sett == '1' or sett == '2':
     return sett
   elif sett == '3':
@@ -80,42 +80,42 @@ def settings():
     return settings()
 
 
-
-def game(field, count, sett):
-  if sett == '1':
-    while count <= 8:
+def game_hu(field, count):
+  while count <= 9:
+    print(f'\n  Ход {count}')
+    if count%2:
       user_input('X')
-      count += 1
       check(field, 'X')
-      print_game_field(field)
-      print(f'\nЧисло ходов: {count}')
-      user_input('0')
-      count += 1
-      check(field, '0')
-      print_game_field(field)
-      print(f'\nЧисло ходов: {count}')
-      return game(field, count, sett)
     else:
+      user_input('0')
+      check(field, '0')
+    count += 1
+    print_game_field(field)
+    return game_hu(field, count)
+  else:
       print('Нет свободных полей! Ничья!')
       exit('Игра окончена!')
-  elif sett == '2':
-    while count <= 8:
+
+def game_bot(field, count):
+  while count <= 9:
+    print(f'\n  Ход {count}')
+    if count%2:
       user_input('X')
-      count += 1
       check(field, 'X')
-      print_game_field(field)
-      print(f'\nЧисло ходов: {count}')
+    else:
       computer_input('0')
-      count += 1
       check(field, '0')
-      print_game_field(field)
-      print(f'\nЧисло ходов: {count}')
-      return game(field, count, sett)
+    count += 1
+    print_game_field(field)
+    return game_bot(field, count)
   else:
-    print('Нет свободных полей! Ничья!')
-    exit('Игра окончена!')
+      print('Нет свободных полей! Ничья!')
+      exit('Игра окончена!')
   
 
 sett = settings()
 print_game_field(field)
-game(field, count, sett)
+if sett == '1':
+  game_hu(field, count)
+elif sett == '2':
+  game_bot(field, count)
